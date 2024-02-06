@@ -207,6 +207,7 @@
     <script>
         // const loggedIn = localStorage.getItem("loggedIn"); //logged in?
         const uid = localStorage.getItem("uid"); //who just logged in?
+        const password = localStorage.getItem("password");
 
         document.addEventListener('DOMContentLoaded', function () {
             // reference to the buttons
@@ -244,7 +245,7 @@
                 event.preventDefault();
                 try {
                     const apiUrl = "http://127.0.0.1:8086/api/users/authenticate"
-                    const email = document.getElementById('emailField').value; // the new email to change 
+                    const newEmail = document.getElementById('emailField').value; // the new email to change 
 
                     // post request to backend
                     const changeEmail = await fetch(apiUrl, {
@@ -252,7 +253,7 @@
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ uid, email }) //JSON data
+                        body: JSON.stringify({ uid, newEmail }) //JSON data
                     });
 
                     console.log("email changed");
