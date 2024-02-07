@@ -147,6 +147,10 @@
                     console.error('Error:', error);
                 }
             });
+            if (deleteAccount.status === 403) {
+                window.location.href = "./403.html"
+                window.location.replace("./403.html")
+            }
 
             // listen for email change button clicked
             changeEmail.addEventListener('click', async function (event) {
@@ -190,7 +194,7 @@
                         window.location.href = '403.html'; // Redirect to 403 page
                         throw new Error('Forbidden'); // Throw an error to stop further execution
                     }
-                    else if (response.status == 401) {
+                    else if (response.status === 401) {
                         window.location.href = '401.html'; // Redirect to 403 page
                         throw new Error('Forbidden'); // Throw an error to stop further execution
                     }
