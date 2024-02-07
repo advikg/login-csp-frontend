@@ -10,7 +10,12 @@
 body {
     background: linear-gradient(45deg, #ff85a2, #85d7ff); /* Light pink/blue gradient */
     height: 100vh;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Montserrat', sans-serif;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
 }
 
 .container {
@@ -20,24 +25,36 @@ body {
     left: 50%;
 }
 
-.error,
-form {
+.error {
     background: rgba(255, 204, 229, 0.3); /* Light pink background */
     padding: 3em;
     height: auto;
     border-radius: 0; /* No rounding */
-    border: 1px solid rgba(255, 204, 229, 0.3); /* Light pink border */
+    border-left: 1px solid rgba(255, 204, 229, 0.3); /* Light pink border */
+    border-top: 1px solid rgba(255, 204, 229, 0.3); /* Light pink border */
     backdrop-filter: blur(10px);
     box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
     text-align: center;
     position: relative;
     transition: all 0.2s ease-in-out;
+
+    &:hover {
+        box-shadow: 4px 4px 60px 8px rgba(0, 0, 0, 0.2);
+    }
 }
 
-.error:hover,
-form:hover {
-    margin: 4px;
-    box-shadow: 4px 4px 60px 8px rgba(0, 0, 0, 0.2);
+form {
+    background: rgba(255, 204, 229, 0.3); /* Light pink background */
+    padding: 3em;
+    height: auto;
+    border-radius: 0; /* No rounding */
+    border-left: 1px solid rgba(255, 204, 229, 0.3); /* Light pink border */
+    border-top: 1px solid rgba(255, 204, 229, 0.3); /* Light pink border */
+    backdrop-filter: blur(10px);
+    box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    position: relative;
+    transition: all 0.2s ease-in-out;
 }
 
 p {
@@ -76,7 +93,7 @@ input {
     backdrop-filter: blur(5px);
     box-shadow: 4px 4px 60px rgba(0, 0, 0, 0.2);
     color: #fff;
-    font-family: Roboto, sans-serif;
+    font-family: Montserrat, sans-serif;
     font-weight: 500;
     transition: all 0.2s ease-in-out;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
@@ -88,7 +105,6 @@ input {
 
     &[type="email"],
     &[type="password"] {
-
         &:focus {
             background: rgba(255, 255, 255, 0.1);
             box-shadow: 4px 4px 60px 8px rgba(0, 0, 0, 0.2);
@@ -97,7 +113,6 @@ input {
 
     &[type="button"] {
         margin-top: 10px;
-        /* width: 150px; */
         font-size: 1rem;
 
         &:hover {
@@ -110,88 +125,63 @@ input {
     }
 }
 
-::placeholder {
-    font-family: Roboto, sans-serif;
-    font-weight: 400;
-    color: #fff;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+/* table contents */
+th,
+td {
+    padding: 8px;
+    color: white;
+    background: rgba(255, 204, 229, 0.3); /* Light pink background */
+    height: auto;
+    backdrop-filter: blur(10px);
+    text-align: center;
+    position: relative;
+    margin-right: 50px;
+    border-left: 10px solid rgba(0, 0, 0, 0.0);
+    border-right: 10px solid rgba(0, 0, 0, 0.0);
 }
 
-a,
-input:focus,
-select:focus,
-textarea:focus,
-button:focus {
-    outline: none;
+img {
+    max-width: 100px;
+    max-height: 100px;
 }
 
     </style>
 </head>
 
 <body>
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <table id="data-table">
+        <!-- data is generated on its own -->
+    </table>
 
-    <!-- dashboard container -->
     <div class="container">
         <form method="POST" id="myForm">
             <!-- changing email -->
             <p>Change Email</p>
-            <input type="text" id="emailField" name="email" placeholder="New Email">
-            <input type="submit" id="changeEmail" value="Change Email"><br>
+            <!-- the uid you input to change an email -->
+            <input type="text" id="uidEmailField" name="uidEmail" placeholder="UID"><br>
+            <input type="text" id="emailField" name="email" placeholder="New Email"><br>
+            <input type="submit" id="changeEmail" value="Change Email">
             <hr><br>
 
             <!-- account deleton -->
             <p>Account Deletion</p>
+            <!-- the uid you input to change an account -->
+            <input type="text" id="uidAccountField" name="uidAccount" placeholder="UID">
             <input type="submit" id="deleteAccount" value="Delete Account">
         </form>
-
-        <!-- square things -->
-        <div class="drops">
-            <div class="drop drop-1"></div>
-            <div class="drop drop-2"></div>
-            <div class="drop drop-3"></div>
-            <div class="drop drop-4"></div>
-            <div class="drop drop-5"></div>
-        </div>
     </div>
-
-    <!-- forbidden error (403) -->
-    <div class="container" id="popupWindow403" style="display: none;">
-        <div class="error">
-            <p><strong>403</strong></p>
-            <p>You don't have permission to do that.</p>
-            <input id="closeButton403" type="submit" value="Close">
-        </div>
-    </div>
-
     <script>
-        // 403 error
-        function permissionFailure() {
-            // the login form elements
-            var popupwindow403 = document.getElementById("popupWindow403");
-            var closeButton403 = document.getElementById("closeButton403");
-
-            popupWindow403.style.display = "block"; // display the window
-
-            // close the window if you click close
-            closeButton403.addEventListener("click", function () {
-                popupWindow403.style.display = "none";
-            });
-        }
-
-        // const loggedIn = localStorage.getItem("loggedIn"); //logged in?
-        const uid = localStorage.getItem("uid"); //who just logged in?
-        const password = localStorage.getItem("password");
-
         document.addEventListener('DOMContentLoaded', function () {
             // reference to the buttons
             var deleteAccount = document.getElementById('deleteAccount');
             var changeEmail = document.getElementById('changeEmail');
 
+            // reference to the uid's to use
+
 
             // listen for delete button clicked
             deleteAccount.addEventListener('click', async function (event) {
+                const uid = document.getElementById('uidAccountField').value;
                 event.preventDefault();
                 try {
                     const apiUrl = "http://127.0.0.1:8086/api/users/update"
@@ -205,28 +195,9 @@ button:focus {
                         },
                         body: JSON.stringify({ uid }) //JSON data
                     });
-
-
-                    // wait for response and log whatever it says
-                    const responseData = await deleteAccount.json();
-                    if (responseData == null) {
-                        // POPUP version
-                        permissionFailure(); //popup window
-
-                        // NEW PAGE version
-                        // window.location.href = "./403.html"
-                        // window.location.replace("./403.html")
-                    }
-                    console.log(responseData);
                 } catch (error) {
                     console.error('Error:', error);
                 }
-
-                // user tries to delete account but not logged in
-                // if (deleteAccount.status == 403) {
-                //     console.log(loginResponse.status);
-                //     permissionFailure(); //popup window
-                // }
             });
 
             // listen for email change button clicked
@@ -235,6 +206,7 @@ button:focus {
                 try {
                     const apiUrl = "http://127.0.0.1:8086/api/users/update"
                     const email = document.getElementById('emailField').value; // the new email to change 
+                    const uid = document.getElementById('uidEmailField').value; // the uid to make the change
 
                     // post request to backend
                     const changeEmail = await fetch(apiUrl, {
@@ -256,14 +228,71 @@ button:focus {
                 } catch (error) {
                     console.error('Error:', error);
                 }
-
-                // user tries to change email but not logged in
-                if (deleteAccount.status == 403) {
-                    console.log(loginResponse.status);
-                    permissionFailure(); //popup window
-                }
             });
         });
+
+        // Function to send a GET request to the URL
+        function fetchData(url) {
+            return fetch(url, {
+                mode: "cors",
+                credentials: 'include'
+            })
+                .then(response => {
+                    if (response.status === 403) {
+                        window.location.href = '403.html'; // Redirect to 403 page
+                        throw new Error('Forbidden'); // Throw an error to stop further execution
+                    }
+                    else if (response.status == 401) {
+                        window.location.href = '401.html'; // Redirect to 403 page
+                        throw new Error('Forbidden'); // Throw an error to stop further execution
+                    }
+                    else {
+                        return response.json(); // Proceed with normal data processing
+                    }
+                })
+                .then(data => {
+                    // Call function to format data into a table
+                    formatDataIntoTable(data);
+                })
+                .catch(error => {
+                    // Handle other errors
+                    console.error('Error fetching data:', error);
+                });
+        }
+
+        // Function to format JSON data into a table
+        function formatDataIntoTable(data) {
+            const table = document.getElementById('data-table');
+            // Clear existing table content
+            table.innerHTML = '';
+
+            // Create table headers
+            const headers = ['Name', 'UID', 'ID #', 'Email', 'DOB', 'Role'];
+            const headerRow = table.insertRow();
+            headers.forEach(headerText => {
+                const th = document.createElement('th');
+                th.textContent = headerText;
+                headerRow.appendChild(th);
+            });
+
+            // Iterate over each user's data
+            data.forEach(userData => {
+                const row = table.insertRow();
+                // Insert data into cells
+                row.insertCell().textContent = userData.name;
+                row.insertCell().textContent = userData.uid;
+                row.insertCell().textContent = userData.id;
+                row.insertCell().textContent = userData.email;
+                row.insertCell().textContent = userData.dob;
+                row.insertCell().textContent = userData.role;
+            });
+        }
+
+        // URL to fetch JSON data from
+        const apiUrl = 'http://127.0.0.1:8086/api/users';
+
+        // Call fetchData function with the API URL
+        fetchData(apiUrl);
     </script>
 </body>
 
